@@ -1,19 +1,33 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
 import ArtistsListItem from './ArtistsListItem';
-import {mapValues} from 'lodash';
+import Masonry from 'react-masonry-component';
+
 export default class ArtistsList extends Component {
     render() {
-        const {artists, actions} = this.props;
-        return <div><ul className="todo-list">
-            {artists.map(artist =>
-                <ArtistsListItem key={artist.id} artist={artist} {...actions}/>
-            )}
-        </ul></div>;
+        const masonryOptions = {
+            itemSelector: '.Note',
+            columnWidth: 250,
+            gutter: 10,
+            isFitWidth: true
+        };
+        const {artists} = this.props;
+        return<Masonry
+            className='NotesGrid'
+            options={masonryOptions}
+        >
+            {
+                artists.map(artist =>
+                    <ArtistsListItem
+                        key={artist.id} artist={artist}
+                    >
+                        {artist.text}
+                    </ArtistsListItem>
+                )
+            }
+        </Masonry>;
     }
 }
 ArtistsList.propTypes = {
-    artists: PropTypes.array.isRequired,
-    actions: PropTypes.object.isRequired
+    artists: PropTypes.array.isRequired
 };

@@ -1,21 +1,26 @@
-import * as types from '../constants/ActionTypes';
+import AppConstants from '../constants/ActionTypes';
+import AppDispatcher from '../dispatcher/AppDispatcher';
+import ArtitsApi from '../api/ArtistsApi';
 import request from 'axios';
-export const requestPosts = artists => ({
-    type: types.REQUEST_ARTISTS,
-    artists
-});
-
-const fetchArtists = artists => dispatch => {
-    dispatch(requestPosts(artists));
-    return fetch('http://api.wispoz.com/artists')
-        .then(response => response.json())
-        .then(function (json) {
-            console.log(json);
+const AartistsActions = {
+    loadArtists() {
+        AppDispatcher.dispatch({
+            type: AppConstants.LOAD_ARTISTS_REQUEST
         });
+        ArtitsApi.listArtists()
+            .then(({ data }) =>
+                AppDispatcher.dispatch({
+                    type: AppConstants.LOAD_ARTISTS_SUCCESS,
+                    items: data
+                })
+            )
+            .catch(err =>
+                AppDispatcher.dispatch({
+                    type: AppConstants.LOAD_ARTISTS_FAIL,
+                    error: err
+                })
+            );
+    }
+};
 
-};
-export const fetchPostsIfNeeded = artists => (dispatch, getState) => {
-    console.log(artists);
-    console.log('fetch');
-        return dispatch(fetchArtists(artists));
-};
+export default AartistsActions;

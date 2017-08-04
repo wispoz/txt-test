@@ -1,36 +1,35 @@
-import React from 'react';
+import React, {Component} from 'react';
 import logo from '../../logo.svg';
 import './App.css';
-import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import * as ArtistsActions from '../actions/ArtistsActions';
-
+import ArtistsStore from '../stores/ArtistsStore';
+import ArtistsActions from '../actions/ArtistsActions';
 import ArtistsList from './artists/ArtistsList';
-
-const App = ({artists, actions}) => (
-    <div className="App">
-        <div className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
-            <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-            To get started, edit <code>src/App.js</code> and save to dsgr.
-        </p>
-        <div><ArtistsList artists={artists} actions={actions} /></div>
-    </div>
-);
-App.propTypes = {
-    artists: PropTypes.array.isRequired,
-    actions: PropTypes.object.isRequired
-};
-const mapStateToProps = state => ({
-    artists: state.artists
+function getStateFromFlux() {
+    return {
+        isLoading: ArtistsStore.isLoading(),
+        artists: ArtistsStore.getArtists()
+    };
+}
+const App = React.createClass({
+    getInitialState() {
+        return getStateFromFlux();
+    },
+    componentWillMount() {
+        ArtistsActions.loadArtists();
+    },
+    componentDidMount() {
+        ArtistsStore.addChangeListener(this._onChange);
+    },
+    _onChange() {
+        this.setState(getStateFromFlux());
+    },
+    render () {
+      return  <div className="App">
+            <p className="App-intro">
+                To get started, edit <code>src/App.js</code> and save to dsgr.
+            </p>
+          <div><ArtistsList artists={this.state.artists}/></div>
+        </div>;
+    }
 });
-const mapDispatchToProps = dispatch => ({
-    actions: bindActionCreators(ArtistsActions, dispatch)
-});
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(App);
+export default App;
