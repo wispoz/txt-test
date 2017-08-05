@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../../asterisk-report/.idea/asterisk-report.iml" filepath="$PROJECT_DIR$/../../asterisk-report/.idea/asterisk-report.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/txt-test.iml" filepath="$PROJECT_DIR$/.idea/txt-test.iml" />
     </modules>
   </component>

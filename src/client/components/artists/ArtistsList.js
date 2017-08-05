@@ -6,7 +6,7 @@ import Masonry from 'react-masonry-component';
 export default class ArtistsList extends Component {
     render() {
         const masonryOptions = {
-            itemSelector: '.Note',
+            itemSelector: '.Artist',
             columnWidth: 250,
             gutter: 10,
             isFitWidth: true
